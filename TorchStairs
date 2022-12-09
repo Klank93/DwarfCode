@@ -1,0 +1,27 @@
+local stairPosition = Position(736, 453, 10)
+
+function onUse(cid, item, fromPosition, toPosition,isHotkey)
+	if item.itemid == 3943 then
+		item:transform(3944)
+		doSendMagicEffect(stairPosition, CONST_ME_POFF)
+		Game.createItem(4835, 1, stairPosition)
+		cid:sendTextMessage(MESSAGE_INFO_DESCR, "You've lit the torch and a secret stairwell appears!.")
+
+		addEvent(function(TilePosition, toPosition, torchId)
+			Game.createItem(3177, 1, TilePosition)
+			local torch = Tile(toPosition):getItemById(torchId)
+			if torch then
+				torch:transform(3943)
+			end
+			doSendMagicEffect(TilePosition, CONS_ME_POFF)
+		end, 2000, stairPosition, toPosition, 3944)
+
+	else
+		item:transform(3943)
+		local stairWell = Tile(stairPosition):getItemById(4835)
+		if stairWell then
+			stairWell:transform(3177)
+		end
+	end
+	return true
+end
