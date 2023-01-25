@@ -1,0 +1,49 @@
+local pos = {
+	Position(555, 744, 7),-- creaturepos
+	Position(563, 744, 7),-- creaturepos
+	Position(560, 743,7), -- creaturepos
+	Position(557, 745, 7), -- creaturepos
+	Position(561,745,7), --Tp front of door
+	Position(563,750,7),
+}
+local area = {
+	frompos = Position(553, 743, 7),   -- the first north-west tile pos
+	topos = Position(563, 745, 7),	-- the last south-east tile pos
+}
+local monster = {"demon skeleton", "ghoul", "ghost", "skeleton"}
+
+function Createmonster()
+		doSummonCreature("ghoul",pos[1])
+		doSummonCreature("demon skeleton",pos[2])
+		doSummonCreature("ghost",pos[3])
+		doSummonCreature("skeleton",pos[4])
+end
+
+
+function onUse(cid, item, fromPosition, target, toPosition, isHotkey)
+	if item.uid == 26001 and item.itemid == 5123 then
+		if getPlayerStorageValue(cid, Storage.SaveFrelden) == 1 then
+			doTransformItem(item.uid, item.itemid + 1)
+			doTeleportThing(cid, pos[5], TRUE)
+			doTransformItem(item.uid,item.itemid -1)
+			addEvent(Createmonster, 1000)
+			cid:setStorageValue(Storage.SaveFrelden, 2)
+end
+
+		else
+		doPlayerSendTextMessage(cid,MESSAGE_INFO_DESCR,'The door seems to be sealed against unwanted intruders.')
+return false
+end
+
+end
+
+function onKill(cid,target,lastHit)
+	if isMonster(target) then			-- checks if killed thing is monster
+		if isInRange(getThingPos(target) , area.frompos, area.topos) then -- check for area killed in
+			if string.lower(getCreatureName(target)) == string.lower(monster) then -- check for monster name
+				doCreateTeleport(1387,pos[4], Position(554,745,7))
+			end
+		end
+	end
+end
+
