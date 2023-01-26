@@ -1,0 +1,36 @@
+local area = {
+	centerTilePos = Position(558, 744, 7),
+	tilesToLeft = 5,
+	tilesToRight = 5,
+	tilesToTop = 2,
+	tilesToBottom = 2,
+	teleportPos =  Position(554,745,7)
+}
+local monsterNames = {"ghoul",
+					  "ghost",
+					  "demon skeleton",
+					  "skeleton",
+					  }
+
+function onKill(cid, target, lastHit)
+	local targetName = string.lower(getCreatureName(target))
+
+	if isMonster(target) and table.contains(monsterNames, targetName)  then -- checks if killed thing is monster and monster with right name
+		local spectators = Game.getSpectators(area.centerTilePos, false, false, 5,5,2,2) -- find every creature in room
+
+		for key, creature in pairs(spectators) do
+			print(key,string.lower(getCreatureName(creature)))
+			if isMonster(creature) and table.contains(monsterNames,targetName) then -- if there is creature killed in the room that are according to table then
+				cid:sendTextMessage(MESSAGE_INFO_DESCR, "You are missing something.")
+				doCreateTeleport(1387, getThingPos(target), area.teleportPos)-- creating teleport at position
+				return true
+			end
+			end
+		end
+	
+
+
+		return true
+	end
+
+
