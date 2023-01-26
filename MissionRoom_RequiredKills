@@ -20,14 +20,14 @@ function onKill(cid, target, lastHit)
 
 		for key, creature in pairs(spectators) do
 			print(key,string.lower(getCreatureName(creature)))
-			if isMonster(creature) and table.contains(monsterNames,targetName) then -- if there is creature killed in the room that are according to table then
+			if isMonster(creature) and table.contains(monsterNames,targetName) then -- if all creatures killed in the room that are according to table then
 				cid:sendTextMessage(MESSAGE_INFO_DESCR, "You are missing something.")
 				doCreateTeleport(1387, getThingPos(target), area.teleportPos)-- creating teleport at position
 				return true
 			end
 			end
 		end
-	
+
 
 
 		return true
